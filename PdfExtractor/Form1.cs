@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,11 +53,7 @@ namespace PdfExtractor
                 char c = page[i];
                 if(c!=sep1 && c != sep2)
                 {
-                    try
-                    {
-                        int a= (int)Char.GetNumericValue(c);
-                    }
-                    catch(Exception ex)
+                    if (!Char.IsNumber(c))
                     {
                         return false;
                     }
@@ -104,7 +101,8 @@ namespace PdfExtractor
                         string ss = "";
                         int num1= int.Parse(s);
                         int num2;
-                        for(int j=i+1; j < page.Length; j++)
+                        int j;
+                        for (j=i+1; j < page.Length; j++)
                         {
                             char cc = page[j];
                             if(cc!=sep1 && cc!= sep2)
@@ -115,14 +113,32 @@ namespace PdfExtractor
                             {
                                 break;
                             }
+                            
                         }
                         num2 = int.Parse(ss);
                         int[] nums = GetAllNumbersBetween(num1, num2);
                         r.AddRange(nums);
+                        if (j < page.Length-1)
+                        {
+                            s = "";
+                            i = j;
+                        }
+                        else
+                        {
+                            s = "";
+                            break;
+                        }
+
+                        
                     }
+                    //s = "";
                 }
             }
-            r.Add(int.Parse(s));
+            try
+            {
+                r.Add(int.Parse(s));
+            }
+            catch(Exception ex) { }
             int[] ret = new int[r.Count];
             for(int i=0; i < ret.Length; i++)
             {
@@ -147,6 +163,10 @@ namespace PdfExtractor
                         ss += i.ToString()+";";
                     }
                     MessageBox.Show(ss, "Pages", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Please put only numbers and ',' or '-'", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
