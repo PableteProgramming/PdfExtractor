@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,9 +12,11 @@ using System.Windows.Forms;
 
 namespace PdfExtractor
 {
+
     public partial class Form1 : Form
     {
         string inputfile;
+        string separator = ";";
         string outputfile;
         string pagesstring;
         int[] pages;
@@ -147,6 +150,52 @@ namespace PdfExtractor
             return ret;
         }
 
+        private string RemoveRepetedElements(string s)
+        {
+            string ss="";
+            List<int> a = new List<int>();
+            a.Clear();
+            string s1 = "";
+            foreach(char sss in s)
+            {
+                if (sss != char.Parse(separator))
+                {
+                    s1 += sss;
+                }
+                else
+                {
+                    a.Add(int.Parse(s1));
+                    s1 = "";
+                }
+            }
+            var dict = new Dictionary<int, int>();
+            foreach(int i in a)
+            {
+                if (!dict.ContainsKey(i))
+                {
+                    dict.Add(i, 0);
+                }
+                dict[i]++;
+            }
+
+            foreach(var k in dict)
+            {
+                if (k.Value > 1)
+                {
+                    int v = k.Value;
+                    for (int j = 0; j < v-1; j++)
+                    {
+                        a.RemoveAt(a.IndexOf(k.Key));
+                    }
+                }
+            }
+            foreach(int aa in a)
+            {
+                ss += aa.ToString() + separator;
+            }
+            return ss;
+        }
+
         private void Extract_Click(object sender, EventArgs e)
         {
             outputfile = textBox2.Text;
@@ -154,19 +203,30 @@ namespace PdfExtractor
             pagesstring = textBox3.Text;
             if(outputfile.Trim()!="" && inputfile.Trim() != "" && pagesstring.Trim()!="")
             {
-                if (AllIntegers(pagesstring, ',', '-'))
+                if (File.Exists(inputfile))
                 {
-                    pages = GetPagesFromString(pagesstring, ',', '-');
-                    string ss = "";
-                    foreach(int i in pages)
+                    if (AllIntegers(pagesstring, ',', '-'))
                     {
-                        ss += i.ToString()+";";
+                        pages = GetPagesFromString(pagesstring, ',', '-');
+                        string ss = "";
+                        foreach (int i in pages)
+                        {
+                            ss += i.ToString() + separator;
+                        }
+                        ss = RemoveRepetedElements(ss);
+                        MessageBox.Show(ss, "Pages", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        PdfInfo pdfextractor = new PdfInfo(inputfile);
+                        int t= pdfextractor.ExtractInfo();
+                        //MessageBox.Show(t.ToString(), "Page Number", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
-                    MessageBox.Show(ss, "Pages", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    else
+                    {
+                        MessageBox.Show("Please put only numbers and ',' or '-'", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Please put only numbers and ',' or '-'", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Input file: " + inputfile + " does not exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else

@@ -5,11 +5,11 @@ C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfEx
 C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfExtractor\PdfExtractor\bin\Debug\netcoreapp3.1\PdfExtractor.dll
 C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfExtractor\PdfExtractor\bin\Debug\netcoreapp3.1\PdfExtractor.pdb
 C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfExtractor\PdfExtractor\obj\Debug\netcoreapp3.1\PdfExtractor.csprojAssemblyReference.cache
-C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfExtractor\PdfExtractor\obj\Debug\netcoreapp3.1\PdfExtractor.Form1.resources
 C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfExtractor\PdfExtractor\obj\Debug\netcoreapp3.1\PdfExtractor.csproj.GenerateResource.cache
 C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfExtractor\PdfExtractor\obj\Debug\netcoreapp3.1\PdfExtractor.AssemblyInfoInputs.cache
 C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfExtractor\PdfExtractor\obj\Debug\netcoreapp3.1\PdfExtractor.AssemblyInfo.cs
-C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfExtractor\PdfExtractor\obj\Debug\netcoreapp3.1\PdfExtractor.csproj.CoreCompileInputs.cache
 C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfExtractor\PdfExtractor\obj\Debug\netcoreapp3.1\PdfExtractor.dll
 C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfExtractor\PdfExtractor\obj\Debug\netcoreapp3.1\PdfExtractor.pdb
 C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfExtractor\PdfExtractor\obj\Debug\netcoreapp3.1\PdfExtractor.genruntimeconfig.cache
+C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfExtractor\PdfExtractor\obj\Debug\netcoreapp3.1\PdfExtractor.csproj.CoreCompileInputs.cache
+C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfExtractor\PdfExtractor\obj\Debug\netcoreapp3.1\PdfExtractor.Form1.resources
