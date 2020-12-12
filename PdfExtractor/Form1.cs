@@ -134,7 +134,6 @@ namespace PdfExtractor
 
                         
                     }
-                    //s = "";
                 }
             }
             try
@@ -149,52 +148,46 @@ namespace PdfExtractor
             }
             return ret;
         }
-
-        private string RemoveRepetedElements(string s)
+        private bool IsRepeatedElements(string s, List<string> r)
         {
-            string ss="";
-            List<int> a = new List<int>();
-            a.Clear();
-            string s1 = "";
-            foreach(char sss in s)
+            r.Clear();
+            List<string> elems= new List<string>();
+            elems.Clear();
+
+            string ss = "";
+
+            foreach(char c in s)
             {
-                if (sss != char.Parse(separator))
+                if (c.ToString() != separator)
                 {
-                    s1 += sss;
+                    ss += c;
                 }
                 else
                 {
-                    a.Add(int.Parse(s1));
-                    s1 = "";
+                    elems.Add(ss);
+                    ss = "";
                 }
             }
-            var dict = new Dictionary<int, int>();
-            foreach(int i in a)
+            elems.Add(ss);
+
+            IEnumerable<string> duplicates = elems.GroupBy(x => x)
+                                        .Where(g => g.Count() > 1)
+                                        .Select(x => x.Key);
+
+            if (duplicates.Count() > 0)
             {
-                if (!dict.ContainsKey(i))
+                foreach(string st in duplicates)
                 {
-                    dict.Add(i, 0);
+                    r.Add(st);
                 }
-                dict[i]++;
+
+                return true;
             }
 
-            foreach(var k in dict)
-            {
-                if (k.Value > 1)
-                {
-                    int v = k.Value;
-                    for (int j = 0; j < v-1; j++)
-                    {
-                        a.RemoveAt(a.IndexOf(k.Key));
-                    }
-                }
-            }
-            foreach(int aa in a)
-            {
-                ss += aa.ToString() + separator;
-            }
-            return ss;
+            return false;
         }
+
+
 
         private void Extract_Click(object sender, EventArgs e)
         {
@@ -213,11 +206,72 @@ namespace PdfExtractor
                         {
                             ss += i.ToString() + separator;
                         }
-                        ss = RemoveRepetedElements(ss);
-                        MessageBox.Show(ss, "Pages", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        PdfInfo pdfextractor = new PdfInfo(inputfile);
-                        int t= pdfextractor.ExtractInfo();
-                        //MessageBox.Show(t.ToString(), "Page Number", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        List<string> repeatedElems= new List<string>();
+                        repeatedElems.Clear();
+                        if (IsRepeatedElements(ss, repeatedElems))
+                        {
+                            bool allOk=false;
+                            foreach(string rs in repeatedElems)
+                            {
+                                if(MessageBox.Show("Are you sure you want to have multiples times the page " + rs + " ?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                {
+                                    allOk = true;
+                                }
+                                else
+                                {
+                                    allOk = false;
+                                }
+                                if (!allOk)
+                                {
+                                    break;
+                                }
+                            }
+
+                            if (allOk)
+                            {
+                                
+                                PdfInfo pdfextractor = new PdfInfo(inputfile);
+                                int t = pdfextractor.ExtractInfo();
+
+                                allOk = true;
+                                foreach(int i in pages)
+                                {
+                                    if (i > t)
+                                    {
+                                        allOk = false;
+                                        MessageBox.Show("Pdf does not have more than " + i + " pages !", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        break;
+                                    }
+                                }
+                                if (allOk)
+                                {
+                                    MessageBox.Show(ss, "Pages", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    ///////Run python program
+                                }
+                            }
+                            
+                        }
+                        else
+                        {
+                            PdfInfo pdfextractor = new PdfInfo(inputfile);
+                            int t = pdfextractor.ExtractInfo();
+
+                            bool allOk = true;
+                            foreach (int i in pages)
+                            {
+                                if (i > t)
+                                {
+                                    allOk = false;
+                                    MessageBox.Show("Pdf does not have more than " + i + " pages !", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    break;
+                                }
+                            }
+                            if (allOk)
+                            {
+                                MessageBox.Show(ss, "Pages", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                ///////Run python program
+                            }
+                        }
                     }
                     else
                     {
