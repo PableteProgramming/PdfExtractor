@@ -49,8 +49,9 @@ namespace PdfExtractor
                 outputfile = textBox2.Text;
             }
         }
-        private bool AllIntegers(string page, char sep1, char sep2)
+        private bool AllIntegers(string page, char sep1, char sep2, ref bool IsZero)
         {
+            IsZero = false;
             for (int i = 0; i < page.Length; i++)
             {
                 char c = page[i];
@@ -59,6 +60,14 @@ namespace PdfExtractor
                     if (!Char.IsNumber(c))
                     {
                         return false;
+                    }
+                    else
+                    {
+                        if (int.Parse(c.ToString()) == 0)
+                        {
+                            IsZero = true;
+                            return false;
+                        }
                     }
                 }
             }
@@ -96,13 +105,13 @@ namespace PdfExtractor
                 {
                     if (c == sep1)//,
                     {
-                        r.Add(int.Parse(s));
+                        r.Add(int.Parse(s)-1);
                         s = "";
                     }
                     else if (c == sep2)//-
                     {
                         string ss = "";
-                        int num1= int.Parse(s);
+                        int num1= int.Parse(s)-1;
                         int num2;
                         int j;
                         for (j=i+1; j < page.Length; j++)
@@ -118,7 +127,7 @@ namespace PdfExtractor
                             }
                             
                         }
-                        num2 = int.Parse(ss);
+                        num2 = int.Parse(ss)-1;
                         int[] nums = GetAllNumbersBetween(num1, num2);
                         r.AddRange(nums);
                         if (j < page.Length-1)
@@ -138,7 +147,7 @@ namespace PdfExtractor
             }
             try
             {
-                r.Add(int.Parse(s));
+                r.Add(int.Parse(s)-1);
             }
             catch(Exception ex) { }
             int[] ret = new int[r.Count];
@@ -189,10 +198,6 @@ namespace PdfExtractor
 
         private bool MoreThanOneElem(string s, char sep1, char sep2)
         {
-            //string pattern = $@"[{sep1}][{sep1}*]";
-            //string pattern1 = $@"[{sep1}][{sep2}*]";
-            //string pattern2 = $@"[{sep2}][{sep1}*]";
-            //string pattern3 = $@"[{sep2}][{sep2}*]";
             for(int i=0; i<s.Length;i++)
             {
                 char c = s[i];
@@ -232,6 +237,31 @@ namespace PdfExtractor
             }
         }
 
+        private bool EndOfFileIs(string s, string e)
+        {
+            int j = 0;
+            for (int i = s.Length - e.Length; i < s.Length; i++, j++)
+            {
+                if (s[i] != e[j])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private bool spaceInString(string array)
+        {
+            foreach (char ss in array)
+            {
+                if (ss == ' ')
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private void Extract_Click(object sender, EventArgs e)
         {
             outputfile = textBox2.Text;
@@ -239,99 +269,129 @@ namespace PdfExtractor
             pagesstring = textBox3.Text;
             if(outputfile.Trim()!="" && inputfile.Trim() != "" && pagesstring.Trim()!="")
             {
+                if (!EndOfFileIs(outputfile, ".pdf"))
+                {
+                    outputfile += ".pdf";
+                }
+
+                if (!EndOfFileIs(inputfile, ".pdf"))
+                {
+                    inputfile += ".pdf";
+                }
+
                 if (File.Exists(inputfile))
                 {
-                    if (AllIntegers(pagesstring, ',', '-'))
+                    if (spaceInString(inputfile))
                     {
-                        //Error
-
-                        if (!MoreThanOneElem(pagesstring, ',', '-'))
+                        MessageBox.Show("Input file: "+inputfile+" contains spaces !!!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        if (spaceInString(outputfile))
                         {
-                            pages = GetPagesFromString(pagesstring, ',', '-');
-                            string ss = "";
-                            foreach (int i in pages)
+                            MessageBox.Show("Output file: " + outputfile + " contains spaces !!!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        else
+                        {
+                            bool IsZero = false;
+                            if (AllIntegers(pagesstring, ',', '-', ref IsZero))
                             {
-                                ss += i.ToString() + separator;
-                            }
-                            List<string> repeatedElems = new List<string>();
-                            repeatedElems.Clear();
-                            if (IsRepeatedElements(ss, repeatedElems))
-                            {
-                                bool allOk = false;
-                                foreach (string rs in repeatedElems)
+                                if (!MoreThanOneElem(pagesstring, ',', '-'))
                                 {
-                                    if (MessageBox.Show("Are you sure you want to have multiples times the page " + rs + " ?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                    pages = GetPagesFromString(pagesstring, ',', '-');
+                                    string ss = "";
+                                    foreach (int i in pages)
                                     {
-                                        allOk = true;
+                                        ss += i.ToString() + separator;
+                                    }
+                                    List<string> repeatedElems = new List<string>();
+                                    repeatedElems.Clear();
+                                    if (IsRepeatedElements(ss, repeatedElems))
+                                    {
+                                        bool allOk = false;
+                                        foreach (string rs in repeatedElems)
+                                        {
+                                            if (MessageBox.Show("Are you sure you want to have multiples times the page " + rs + " ?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                            {
+                                                allOk = true;
+                                            }
+                                            else
+                                            {
+                                                allOk = false;
+                                            }
+                                            if (!allOk)
+                                            {
+                                                break;
+                                            }
+                                        }
+
+                                        if (allOk)
+                                        {
+
+                                            PdfInfo pdfextractor = new PdfInfo(inputfile);
+                                            int t = pdfextractor.ExtractInfo();
+
+                                            allOk = true;
+                                            foreach (int i in pages)
+                                            {
+                                                if (i > t)
+                                                {
+                                                    allOk = false;
+                                                    MessageBox.Show("Pdf does not have more than " + i + " pages !", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                                    break;
+                                                }
+                                            }
+                                            if (allOk)
+                                            {
+                                                //MessageBox.Show(ss, "Pages", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                                RunPythonProgram(outputfile.Trim(), inputfile.Trim(), ss);
+                                                ///////Run python program
+                                            }
+                                        }
+
                                     }
                                     else
                                     {
-                                        allOk = false;
-                                    }
-                                    if (!allOk)
-                                    {
-                                        break;
-                                    }
-                                }
+                                        PdfInfo pdfextractor = new PdfInfo(inputfile);
+                                        int t = pdfextractor.ExtractInfo() - 1;
 
-                                if (allOk)
-                                {
-
-                                    PdfInfo pdfextractor = new PdfInfo(inputfile);
-                                    int t = pdfextractor.ExtractInfo();
-
-                                    allOk = true;
-                                    foreach (int i in pages)
-                                    {
-                                        if (i > t)
+                                        bool allOk = true;
+                                        foreach (int i in pages)
                                         {
-                                            allOk = false;
-                                            MessageBox.Show("Pdf does not have more than " + i + " pages !", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                            break;
+                                            if (i > t)
+                                            {
+                                                allOk = false;
+                                                MessageBox.Show("Pdf does not have more than " + i + " pages !", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                                break;
+                                            }
+                                        }
+                                        if (allOk)
+                                        {
+                                            //MessageBox.Show(ss, "Pages", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                            RunPythonProgram(outputfile.Trim(), inputfile.Trim(), ss);
+                                            ///////Run python program
                                         }
                                     }
-                                    if (allOk)
-                                    {
-                                        //MessageBox.Show(ss, "Pages", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                        RunPythonProgram(outputfile.Trim(), inputfile.Trim(), ss);
-                                        ///////Run python program
-                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show(", or - are more than one times beside !", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
 
                             }
                             else
                             {
-                                PdfInfo pdfextractor = new PdfInfo(inputfile);
-                                int t = pdfextractor.ExtractInfo();
-
-                                bool allOk = true;
-                                foreach (int i in pages)
+                                if (IsZero)
                                 {
-                                    if (i > t)
-                                    {
-                                        allOk = false;
-                                        MessageBox.Show("Pdf does not have more than " + i + " pages !", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                        break;
-                                    }
+                                    MessageBox.Show("Please put numbers bigger than 0 !", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
-                                if (allOk)
+                                else
                                 {
-                                    //MessageBox.Show(ss, "Pages", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                    RunPythonProgram(outputfile.Trim(), inputfile.Trim(), ss);
-                                    ///////Run python program
+                                    MessageBox.Show("Please put only numbers and ',' or '-'", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
                             }
                         }
-                        else
-                        {
-                            MessageBox.Show(", or - are more than one times beside !", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                        
-                    }
-                    else
-                    {
-                        MessageBox.Show("Please put only numbers and ',' or '-'", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    } 
                 }
                 else
                 {
