@@ -403,5 +403,11 @@ namespace PdfExtractor
                 MessageBox.Show("Please fill the pages and the input and output file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void HelpButton_Click(object sender, EventArgs e)
+        {
+            HelpDialog dialog = new HelpDialog();
+            dialog.ShowDialog();
+        }
     }
 }

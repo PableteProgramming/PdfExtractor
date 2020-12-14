@@ -13,3 +13,4 @@ C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfEx
 C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfExtractor\PdfExtractor\obj\Debug\netcoreapp3.1\PdfExtractor.genruntimeconfig.cache
 C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfExtractor\PdfExtractor\obj\Debug\netcoreapp3.1\PdfExtractor.csproj.CoreCompileInputs.cache
 C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfExtractor\PdfExtractor\obj\Debug\netcoreapp3.1\PdfExtractor.Form1.resources
+C:\Users\curro.LAPTOP-DUBBS74R\OneDrive\Documentos\Programming\VS\Pablo\C#\PdfExtractor\PdfExtractor\obj\Debug\netcoreapp3.1\PdfExtractor.HelpDialog.resources

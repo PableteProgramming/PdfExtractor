@@ -39,6 +39,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.Extract = new System.Windows.Forms.Button();
+            this.HelpButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -120,7 +121,7 @@
             // 
             this.textBox3.Location = new System.Drawing.Point(78, 143);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(412, 23);
+            this.textBox3.Size = new System.Drawing.Size(331, 23);
             this.textBox3.TabIndex = 8;
             this.textBox3.TabStop = false;
             // 
@@ -138,11 +139,24 @@
             this.Extract.UseVisualStyleBackColor = false;
             this.Extract.Click += new System.EventHandler(this.Extract_Click);
             // 
+            // HelpButton
+            // 
+            this.HelpButton.BackColor = System.Drawing.Color.Yellow;
+            this.HelpButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.HelpButton.Location = new System.Drawing.Point(416, 142);
+            this.HelpButton.Name = "HelpButton";
+            this.HelpButton.Size = new System.Drawing.Size(73, 25);
+            this.HelpButton.TabIndex = 10;
+            this.HelpButton.Text = "Help !";
+            this.HelpButton.UseVisualStyleBackColor = false;
+            this.HelpButton.Click += new System.EventHandler(this.HelpButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(502, 232);
+            this.Controls.Add(this.HelpButton);
             this.Controls.Add(this.Extract);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.label4);
@@ -175,6 +189,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Button Extract;
+        private System.Windows.Forms.Button HelpButton;
     }
 }
 
