@@ -1,8 +1,32 @@
 {
   "version": 2,
-  "dgSpecHash": "MGdcXcqbw2hyWAkvRpJVbOhnl4lUhjZLPIOrEnp4AdX9+zsJnRxmie/C11fwQi9igtA6JURTq5Qh84d31h33+w==",
+  "dgSpecHash": "8LdWWs01T+x18DVyv2jojTQ8zO/GDnl31O9fzJgd1a8tfFTVmX0ySrOA8rg/c2DMBVvQ0SW+tx3mmVz7b7cZrQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\curro.LAPTOP-DUBBS74R\\OneDrive\\Documentos\\Programming\\VS\\Pablo\\C#\\PdfExtractor\\PdfExtractor\\PdfExtractor.csproj",
-  "expectedPackageFiles": [],
-  "logs": []
+  "projectFilePath": "D:\\Programming\\Windows\\VS\\Pablo\\C#\\PdfExtractor\\PdfExtractor\\PdfExtractor.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\curro.LAPTOP-DUBBS74R\\.nuget\\packages\\bouncycastle\\1.8.6.1\\bouncycastle.1.8.6.1.nupkg.sha512",
+    "C:\\Users\\curro.LAPTOP-DUBBS74R\\.nuget\\packages\\itextsharp\\5.5.13.2\\itextsharp.5.5.13.2.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "El paquete \"BouncyCastle 1.8.6.1\" se restauró con \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8\" en lugar de la plataforma de destino del proyecto \".NETCoreApp,Version=v3.1\". Puede que el paquete no sea totalmente compatible con el proyecto.",
+      "libraryId": "BouncyCastle",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "El paquete \"iTextSharp 5.5.13.2\" se restauró con \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8\" en lugar de la plataforma de destino del proyecto \".NETCoreApp,Version=v3.1\". Puede que el paquete no sea totalmente compatible con el proyecto.",
+      "libraryId": "iTextSharp",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
 }
